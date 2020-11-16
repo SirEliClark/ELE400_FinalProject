@@ -3,7 +3,7 @@
 % Fall '20
 I_color = imrotate(imread('Jack_MaskWrong.jpeg'),-90);
 I_color = imresize(I_color,[500,500]);
-I_mask = imrotate(imread('Jack_MaskWrong.jpeg'),-90);
+I_mask = imrotate(imread('Jack_Mask.jpeg'),-90);
 I_mask = rgb2gray(I_mask);
 I_mask = imresize(I_mask,[500,500]);
 figure; imshow(I_mask); title('Original BW Image');
@@ -130,4 +130,4 @@ imshow(uint8(rgbChains));title('10 Longest Chains for Current Image')
 HSV = rgb2hsv(I_color);
 hue = HSV(:,:,2);
 hue = imbinarize(hue);
-figure;imshow(hue)
+figure;imshow((hue))

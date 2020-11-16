@@ -7,7 +7,7 @@ chainLen = [];
 for r = 2:rows-1
     for c = 2:cols-1
         i = 0;
-        j = 0;
+        j = 1;
         counter = 0;
         if((I_NM(r,c) > t_h) && (visited(r,c) == 0))
             visited(r,c) = 1;
@@ -26,7 +26,7 @@ for r = 2:rows-1
                 end 
                 chainLen = [chainLen;counter];
                 
-            elseif(Eo(r,c) == 45)
+            elseif(Eo(r,c) == 135)
                 while((I_NM(r-i,c+i) > t_l) && (r-i > 1) && (c +i < cols-2))
                     visited(r-i,c+i) = 1;
                     points = [points;(r-i),(c+i)];
@@ -55,7 +55,7 @@ for r = 2:rows-1
                     j = j+1;
                 end 
                 chainLen = [chainLen;counter];
-            elseif(Eo(r,c) == 135)
+            elseif(Eo(r,c) == 45)
                 while((I_NM(r-i,c-i) > t_l) && (r-i > 1) && (c - i > 2))
                     visited(r-i,c-i) = 1;
                     points = [points;(r-i),(c-i)];
