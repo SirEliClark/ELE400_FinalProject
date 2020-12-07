@@ -1,0 +1,30 @@
+%% Check Intersection
+% Takes points from hough lines and eye bbox
+% Check if there are lines inside the extended box
+
+function [Inside] = checkIntersection(Points, bbox)
+% Parameter to extend bbox down by
+H_ext = 1.5;
+% Get extedned box corners
+T = bbox( 
+B = 
+L
+R
+TL = [bbox(1) bbox(2)];
+TR = [bbox(1)+bbox(3) bbox(2)];
+BL = [bbox(1) bbox(2)+bbox(4)*H_ext];
+BR = [bbox(1)+bbox(3) bbox(2)+bbox(4)*H_ext];
+for i = 1:size(Points,1)
+    x1 = Points{i,1}(1); x2 = Points{i,2}(1);
+    y1 = Points{i,1}(2); y2 = Points{i,2}(2);
+    % Check point 1
+    if x1 >=
+        
+    end
+    % Check point 2
+    if 
+        
+    end
+end
+
+end

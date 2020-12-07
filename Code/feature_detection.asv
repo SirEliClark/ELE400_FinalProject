@@ -6,12 +6,12 @@
 
 function [EyeSmallBox, EyeBigBox, FaceBox, found] = feature_detection(I)
 % Boolean array for if boxes are found
-found = zeros(3,1);
+found = ones(3,1);
 % EyeSmall detection
 detector = vision.CascadeObjectDetector('EyePairSmall');
 EyeSmallBox = detector(I);
 if (EyeSmallBox)
-    found(1) = 1;
+    found(1) = 0;
     % faceImage = insertObjectAnnotation(I,'rectangle',EyeSmallBox,'Small Eyes');
     % figure; imshow(faceImage); title('Eyes Detected');
 end
@@ -20,18 +20,18 @@ end
 detector = vision.CascadeObjectDetector('EyePairBig');
 EyeBigBox = detector(I);
 if EyeBigBox
-    found(2) = 1;
+    found(2) = 0;
     % faceImage = insertObjectAnnotation(I,'rectangle',EyeBigBox,'Big Eyes');
     % figure; imshow(faceImage); title('Eyes Detected');
 end
 
 % Face detection
-detector = vision.CascadeObjectDetector();
+detector = vision.CascadeObjectDetector('Face');
 FaceBox = detector(I);
 if FaceBox
-    found(3) = 1;
-    %faceImage = insertObjectAnnotation(I,'rectangle',FaceBox,'Face');
-    %figure; imshow(faceImage); title('Face Detected');
+    found(3) = 0;
+    faceImage = insertObjectAnnotation(I,'rectangle',FaceBox,'Face');
+    figure; imshow(faceImage); title('Fa Detected');
 end
 
 % Nose detection
