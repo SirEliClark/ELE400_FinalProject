@@ -16,7 +16,7 @@ Ig = rgb2gray(I);
 [points, chainLen] = Hysterisis(I_nonMax,threshold_low,threshold_high,Eo_new);
 
 % Get histogram for values of >1 from I_nonMax
-fracNonMax = .10;
+fracNonMax = .09;
 I_col = I_nonMax(:);
 I_sortLH = sort(I_col);
 %I_sortHL = sort(I_col,'descend');
