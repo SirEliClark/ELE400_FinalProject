@@ -12,8 +12,8 @@ Ifiles = dir();
 numI = size(Ifiles,1);
 ColorCount = 1;
 % Loop through each image
-for i = 1:numI-2
-    currI = Ifiles(i+2).name;
+for i = 3:numI
+    currI = Ifiles(i).name;
     I = imread(currI);
     % Move to code folder to run functions
     cd ..; cd Code;
@@ -23,99 +23,131 @@ for i = 1:numI-2
     Points = LinesToPoints(lines);
     % Get eye/face bounding boxes
     [EyeSmallBox, EyeBigBox, FaceBox, EyeBox, found, Med, Av] = feature_detection(I);
-    if Med ~= zeros(2,3)
-        CurrMedDist = norm(Med(1,:)-Med(2,:));
-        CurrAvDist = norm(Av(1,:)-Av(2,:));
-        if MaskReal(i)
-            MedColorM(ColorCount) = CurrMedDist;
-            AvColorM(ColorCount) = CurrAvDist;
-        else
-            MedColorN(ColorCount) = CurrMedDist;
-            AvColorN(ColorCount) = CurrAvDist;
-        end
+    if Med ~= zeros(2,3) 
+        MedColor(ColorCount) = norm(Med(1,:)-Med(2,:));
+        AvColor(ColorCount) = norm(Av(1,:)-Av(2,:));
         ColorCount = ColorCount+1;
     end
-    % Median and average color thresholds
-    MedThresh = 85;
-    AvThresh = 75;
     % Hough lines and bounding boxes
     
-%     figure;
+     figure;
 %     faceImage = insertObjectAnnotation(I,'rectangle',[FaceBox;EyeSmallBox;EyeBigBox;EyeBox; MouthBox; NoseBox],'ROI');
-%     imshow(faceImage);
-%         hold on
-%         max_len = 0;
-%         for k = 1:length(lines)
-%             xy = [lines(k).point1; lines(k).point2];
-%             plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
-%     
-%             % Plot beginnings and ends of lines
-%             plot(xy(1,1),xy(1,2),'x','LineWidth',2,'Color','yellow');
-%             plot(xy(2,1),xy(2,2),'x','LineWidth',2,'Color','red');
-%     
-%             % Determine the endpoints of the longest line segment
-%             len = norm(lines(k).point1 - lines(k).point2);
-%             if ( len > max_len)
-%                 max_len = len;
-%                 xy_long = xy;
-%             end
-%         end
-%         plot(xy_long(:,1),xy_long(:,2),'LineWidth',2,'Color','cyan');
-%         title("Hough and ROI's");
-%         hold off
+    imshow(I);
+        hold on
+        max_len = 0;
+        for k = 1:length(lines)
+            xy = [lines(k).point1; lines(k).point2];
+            plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
+    
+            % Plot beginnings and ends of lines
+            plot(xy(1,1),xy(1,2),'x','LineWidth',2,'Color','yellow');
+            plot(xy(2,1),xy(2,2),'x','LineWidth',2,'Color','red');
+    
+            % Determine the endpoints of the longest line segment
+            len = norm(lines(k).point1 - lines(k).point2);
+            if ( len > max_len)
+                max_len = len;
+                xy_long = xy;
+            end
+        end
+        plot(xy_long(:,1),xy_long(:,2),'LineWidth',2,'Color','cyan');
+        title("Hough and ROI's");
+        hold off
     
     % Check if BigEyePair is found
     if found(2)
-        MaskDect(i) = checkIntersection(Points, EyeBigBox);
-        if not(MaskDect(i))
-            if CurrAvDist >= AvThresh || CurrMedDist >= MedThresh
-                MaskDect(i) = 1;
-            end
-        end
-    % Check if SmallEyePair is found
+        MaskDect(i-2) = checkIntersection(Points, EyeBigBox);
+%         if not(MaskDect(i-2))
+%             Idown = I(EyeBigBox(2):end,EyeBigBox(1):EyeBigBox(1)+EyeBigBox(3),:);
+%             lines = edge_detection_Final(Idown);
+%             % figure; imshow(Idown);
+%             Points = LinesToPoints(lines);
+%             % Adjust points to real image
+%             PointsAdj = cell(size(Points));
+%             for k = 1:size(Points,1)
+%                 PointsAdj{k,1}(1) = Points{k,1}(1)+EyeBigBox(1);
+%                 PointsAdj{k,2}(1) = Points{k,2}(1)+EyeBigBox(1);
+%                 PointsAdj{k,1}(2) = Points{k,1}(2)+EyeBigBox(2);
+%                 PointsAdj{k,2}(2) = Points{k,2}(2)+EyeBigBox(2);
+%             end
+%             MaskDect(i-2) = checkIntersection(PointsAdj, EyeBigBox);
+%             figure;
+%             faceImage = insertObjectAnnotation(I,'rectangle',EyeBigBox,'EyeBig');
+%             imshow(faceImage);
+%             hold on
+%             max_len = 0;
+%             for k = 1:length(lines)
+%                 xy = [lines(k).point1; lines(k).point2];
+%                 plot(xy(:,1)+EyeBigBox(1),xy(:,2)+EyeBigBox(2),'LineWidth',2,'Color','green');
+%                 
+%                 % Plot beginnings and ends of lines
+%                 plot(xy(1,1)+EyeBigBox(1),xy(1,2)+EyeBigBox(2),'x','LineWidth',2,'Color','yellow');
+%                 plot(xy(2,1)+EyeBigBox(1),xy(2,2)+EyeBigBox(2),'x','LineWidth',2,'Color','red');
+%                 
+%                 % Determine the endpoints of the longest line segment
+%                 len = norm(lines(k).point1 - lines(k).point2);
+%                 if ( len > max_len)
+%                     max_len = len;
+%                     xy_long = xy;
+%                 end
+%             end
+%             plot(xy_long(:,1)+EyeBigBox(1),xy_long(:,2)+EyeBigBox(2),'LineWidth',2,'Color','cyan');
+%             title("Hough and ROI's");
+%             hold off
+%         end
+        % Check if SmallEyePair is found
     elseif found(1)
-        MaskDect(i) = checkIntersection(Points, EyeSmallBox);
-        if not(MaskDect(i))
-            if CurrAvDist >= AvThresh || CurrMedDist >= MedThresh
-                MaskDect(i) = 1;
-            end
-        end
-    % Check if Created Eyebox is found
+        MaskDect(i-2) = checkIntersection(Points, EyeSmallBox);
+%         if not(MaskDect(i-2))
+%             Idown = I(EyeSmallBox(2):end,EyeSmallBox(1):EyeSmallBox(1)+EyeSmallBox(3),:);
+%             lines = edge_detection_Final(Idown);
+%             % figure; imshow(Idown);
+%             Points = LinesToPoints(lines);PointsAdj = cell(size(Points));
+%             for k = 1:size(Points,1)
+%                 PointsAdj{k,1}(1) = Points{k,1}(1)+EyeSmallBox(1);
+%                 PointsAdj{k,2}(1) = Points{k,2}(1)+EyeSmallBox(1);
+%                 PointsAdj{k,1}(2) = Points{k,1}(2)+EyeSmallBox(2);
+%                 PointsAdj{k,2}(2) = Points{k,2}(2)+EyeSmallBox(2);
+%             end
+%             MaskDect(i-2) = checkIntersection(PointsAdj, EyeSmallBox);
+%             figure;
+%             faceImage = insertObjectAnnotation(I,'rectangle',EyeSmallBox,'EyeBig');
+%             imshow(faceImage);
+%             hold on
+%             max_len = 0;
+%             for k = 1:length(lines)
+%                 xy = [lines(k).point1; lines(k).point2];
+%                 plot(xy(:,1)+EyeSmallBox(1),xy(:,2)+EyeSmallBox(2),'LineWidth',2,'Color','green');
+%                 
+%                 % Plot beginnings and ends of lines
+%                 plot(xy(1,1)+EyeSmallBox(1),xy(1,2)+EyeSmallBox(2),'x','LineWidth',2,'Color','yellow');
+%                 plot(xy(2,1)+EyeSmallBox(1),xy(2,2)+EyeSmallBox(2),'x','LineWidth',2,'Color','red');
+%                 
+%                 % Determine the endpoints of the longest line segment
+%                 len = norm(lines(k).point1 - lines(k).point2);
+%                 if ( len > max_len)
+%                     max_len = len;
+%                     xy_long = xy;
+%                 end
+%             end
+%             plot(xy_long(:,1)+EyeSmallBox(1),xy_long(:,2)+EyeSmallBox(2),'LineWidth',2,'Color','cyan');
+%             title("Hough and ROI's");
+%             hold off
+%        end
+        % Check if Face is found
     elseif found(4)
-        MaskDect(i) = checkIntersection(Points, EyeBox);
-    % Check if FaceBox is found
+        MaskDect(i-2) = checkIntersection(Points, EyeBox);
     elseif found(3)
-        MaskDect(i) = 0;
-        if not(MaskDect(i))
-            if CurrAvDist >= AvThresh || CurrMedDist >= MedThresh
-                MaskDect(i) = 1;
-            end
-        end
-    else
-         MaskDect(i) = 1;
+        MaskDect(i-2) = 0;
     end
-    
     %pause;
     % Switch back to folder to get next image in following loop
     cd ..; cd NewCropped;
 end
-% Histograms for Med and Av colors
-Edges = 0:5:250;
 figure;
-histogram(MedColorM,Edges);
-hold on
-histogram(MedColorN,Edges); 
-title('Norm of Median Color Distances');
-legend('Mask', 'No Mask');
-hold off
+histogram(MedColor); title('Norm of Median Color Distances');
 figure;
-histogram(AvColorM,Edges);
-hold on
-histogram(AvColorN,Edges);
-title('Norm of Mean Color Distances');
-legend('Mask', 'No Mask');
-hold off
-% Detecting if the algorithm is working/Accuracy
+histogram(AvColor); title('Norm of Mean Color Distances');
 DectBinary = (MaskDect==MaskReal);
 Acc = mean(DectBinary);
 % Move back to code folder
