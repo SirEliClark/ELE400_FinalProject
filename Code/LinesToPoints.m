@@ -9,8 +9,8 @@ for k = 1:length(lines)
     % Get points from the lines
     Points{k,1} = lines(k).point1;
     Points{k,2} = lines(k).point2;
-    HorDist = abs(Points{k,1}(1)-Points{k,1}(2));
-    VertDist = abs(Points{k,2}(1)-Points{k,2}(2));
+    HorDist = abs(Points{k,1}(1)-Points{k,2}(1));
+    VertDist = abs(Points{k,1}(2)-Points{k,2}(2));
     if HorDist >= VertDist
         PointsH{count,1} = Points{k,1};
         PointsH{count,2} = Points{k,2};

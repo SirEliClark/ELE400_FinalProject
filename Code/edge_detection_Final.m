@@ -16,15 +16,15 @@ Ig = rgb2gray(I);
 [points, chainLen] = Hysterisis(I_nonMax,threshold_low,threshold_high,Eo_new);
 
 % Get histogram for values of >1 from I_nonMax
-fracNonMax = .075;
+fracNonMax = .1;
 I_col = I_nonMax(:);
 I_sortLH = sort(I_col);
-I_sortHL = sort(I_col,'descend');
+%I_sortHL = sort(I_col,'descend');
 NumG1 = find((I_sortLH>0),1);
 NumUsed = round((length(I_sortLH)-NumG1)*fracNonMax);
 threshNew = I_sortLH(end-NumUsed);
 
-start = find((I_sortLH>1),1);
+% start = find((I_sortLH>1),1);
 
 % figure;
 % histogram(I_sortLH(start:end));
@@ -59,23 +59,5 @@ y = rho(P(:,1));
 %plot(x,y,'s','color','white');
 lines = houghlines(binaryIm,theta,rho,P,'FillGap',5,'MinLength',7);
 
-% figure, imshow(I), hold on
-max_len = 0;
-for k = 1:length(lines)
-    xy = [lines(k).point1; lines(k).point2];
-%     plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
-%     
-%     % Plot beginnings and ends of lines
-%     plot(xy(1,1),xy(1,2),'x','LineWidth',2,'Color','yellow');
-%     plot(xy(2,1),xy(2,2),'x','LineWidth',2,'Color','red');
-%     
-    % Determine the endpoints of the longest line segment
-    len = norm(lines(k).point1 - lines(k).point2);
-    if ( len > max_len)
-        max_len = len;
-        xy_long = xy;
-    end
-end
-% plot(xy_long(:,1),xy_long(:,2),'LineWidth',2,'Color','cyan');
 
 end

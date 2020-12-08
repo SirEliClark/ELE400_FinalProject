@@ -5,7 +5,7 @@
 function [inside] = checkIntersection(Points, bbox)
 inside = 0;
 % Parameter to extend bbox down by
-H_ext = 2.5;
+H_ext = 2;
 % Get extedned box corners
 T = bbox(2); 
 B = bbox(2)+bbox(4)*H_ext;
