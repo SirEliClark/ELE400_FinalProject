@@ -4,14 +4,28 @@
 % Attempts to find 'EyePairBig','EyePairSmall','Face'
 % Returns bounding boxes, and boolean array whether found or not
 
-function [EyeSmallBox, EyeBigBox, FaceBox, NewEyeBox, found] = feature_detection(I)
+function [EyeSmallBox, EyeBigBox, FaceBox, NewEyeBox, found, Med, Av] = feature_detection(I)
 % Boolean array for if boxes are found
-found = zeros(4,1);
+found = zeros(6,1);
 % EyeSmall detection
 detector = vision.CascadeObjectDetector('EyePairSmall');
 EyeSmallBox = detector(I);
 if (EyeSmallBox)
     found(1) = 1;
+    if size(EyeSmallBox,1) > 1
+        [h,w,~] = size(I);
+        for i = 1:size(EyeSmallBox,1)
+            CenterC = EyeSmallBox(i,1)+EyeSmallBox(i,3)/2;
+            CenterR = EyeSmallBox(i,1)+EyeSmallBox(i,3)/2;
+            IcenterC = w/2;
+            IcenterR = h/2;
+            Dist(i) = sqrt((CenterC-IcenterC)^2+(CenterR-IcenterR)^2);
+        end
+        [~,Index] = min(Dist);
+        TempBox = EyeSmallBox(Index,:);
+        EyeSmallBox = zeros(1,4);
+        EyeSmallBox = TempBox;
+    end
     %faceImage = insertObjectAnnotation(I,'rectangle',EyeSmallBox,'Small Eyes');
     %figure; imshow(faceImage); title('Eyes Detected');
 end
@@ -21,6 +35,20 @@ detector = vision.CascadeObjectDetector('EyePairBig');
 EyeBigBox = detector(I);
 if EyeBigBox
     found(2) = 1;
+    if size(EyeBigBox,1) > 1
+        [h,w,~] = size(I);
+        for i = 1:size(EyeBigBox,1)
+            CenterC = EyeBigBox(i,1)+EyeBigBox(i,3)/2;
+            CenterR = EyeBigBox(i,1)+EyeBigBox(i,3)/2;
+            IcenterC = w/2;
+            IcenterR = h/2;
+            Dist(i) = sqrt((CenterC-IcenterC)^2+(CenterR-IcenterR)^2);
+        end
+        [~,Index] = min(Dist);
+        TempBox = EyeBigBox(Index,:);
+        EyeBigBox = zeros(1,4);
+        EyeBigBox = TempBox;
+    end
     %faceImage = insertObjectAnnotation(I,'rectangle',EyeBigBox,'Big Eyes');
     %figure; imshow(faceImage); title('Eyes Detected');
 end
@@ -83,7 +111,7 @@ if found(1) == 0 && found(2) == 0
         NewEyeBox(3) = EyeBox(Right,1)-EyeBox(Left,1)+EyeBox(Right,3);
         NewEyeBox(4) = EyeBox(Bot,2)-EyeBox(Top,2)+EyeBox(Bot,4);
         NewEyeBox;
-        faceImage = insertObjectAnnotation(I,'rectangle',NewEyeBox,'Right Eyes');
+        % faceImage = insertObjectAnnotation(I,'rectangle',NewEyeBox,'Right Eyes');
         % figure; imshow(faceImage); title('Eyes Detected');
     else 
         NewEyeBox = EyeBox;
@@ -91,6 +119,35 @@ if found(1) == 0 && found(2) == 0
 end
 if found(4) == 0
     NewEyeBox = [1, 1, 0, 0];
+end
+
+Med = zeros(2,3);
+Av = zeros(2,3);
+if found(2)
+    % Upper Region
+    Reg1 = I(EyeBigBox(2)-EyeBigBox(4):EyeBigBox(2)+EyeBigBox(4),EyeBigBox(1):EyeBigBox(1)+EyeBigBox(3),:);
+    % Lower Region
+    Reg2 = I(EyeBigBox(2)+EyeBigBox(4):EyeBigBox(2)+3*EyeBigBox(4),EyeBigBox(1):EyeBigBox(1)+EyeBigBox(3),:);
+    Med(1,:) = median(Reg1,[1,2]); Med(2,:) = median(Reg2,[1,2]);
+    Av(1,:) = mean(Reg1,[1,2]); Av(2,:) = mean(Reg2,[1,2]);
+    % figure; imshow(I);
+    % title(sprintf('(Top RGB,Bot RGB) - Median:(%0.2f,%0.2f,%0.2f - %0.2f,%0.2f,%0.2f) Average:(%0.2f,%0.2f,%0.2f - %0.2f,%0.2f,%0.2f)',Med(1,1),Med(1,2),Med(1,3),Med(2,1),Med(2,2),Med(2,3),Av(1,1),Av(1,2),Av(1,3),Av(2,1),Av(2,2),Av(2,3)));
+elseif found(1)
+    % Upper Region
+    Reg1 = I(EyeSmallBox(2)-EyeSmallBox(4):EyeSmallBox(2)+EyeSmallBox(4),EyeSmallBox(1):EyeSmallBox(1)+EyeSmallBox(3),:);
+    % Lower Region
+    Reg2 = I(EyeSmallBox(2)+EyeSmallBox(4):EyeSmallBox(2)+3*EyeSmallBox(4),EyeSmallBox(1):EyeSmallBox(1)+EyeSmallBox(3),:);
+    Med(1,:) = median(Reg1,[1,2]); Med(2,:) = median(Reg2,[1,2]);
+    Av(1,:) = mean(Reg1,[1,2]); Av(2,:) = mean(Reg2,[1,2]);
+    % figure; imshow(I);
+    % title(sprintf('(Top RGB,Bot RGB) - Median:(%0.2f,%0.2f,%0.2f - %0.2f,%0.2f,%0.2f) Average:(%0.2f,%0.2f,%0.2f - %0.2f,%0.2f,%0.2f)',Med(1,1),Med(1,2),Med(1,3),Med(2,1),Med(2,2),Med(2,3),Av(1,1),Av(1,2),Av(1,3),Av(2,1),Av(2,2),Av(2,3)));
+elseif found(4)
+    % Upper Region
+%     Reg1 = I(NewEyeBox(2)-NewEyeBox(4):NewEyeBox(2)+NewEyeBox(4),NewEyeBox(1):NewEyeBox(1)+NewEyeBox(3),:);
+%     % Lower Region
+%     Reg2 = I(NewEyeBox(2)+NewEyeBox(4):NewEyeBox(2)+3*NewEyeBox(4),NewEyeBox(1):NewEyeBox(1)+NewEyeBox(3),:);
+%     Med(1) = median(Reg1); Med(2) = median(Reg2);
+%     Av(1) = mean(Reg1); Av(2) = mean(Reg2);
 end
 
 end
