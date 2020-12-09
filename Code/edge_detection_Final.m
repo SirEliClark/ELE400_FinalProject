@@ -16,6 +16,7 @@ Ig = rgb2gray(I);
 [points, chainLen] = Hysterisis(I_nonMax,threshold_low,threshold_high,Eo_new);
 
 % Get histogram for values of >1 from I_nonMax
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 fracNonMax = .10;
 =======
@@ -29,6 +30,9 @@ fracNonMax = .10;
 fracNonMax = .10;
 >>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
 >>>>>>> Stashed changes
+=======
+fracNonMax = .10;
+>>>>>>> parent of 330226b... Color Intensity Classification Method Implemented
 I_col = I_nonMax(:);
 I_sortLH = sort(I_col);
 %I_sortHL = sort(I_col,'descend');

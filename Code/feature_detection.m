@@ -77,6 +77,7 @@ if FaceBox
             FracH = Eyeh/Ih; FracW = Eyew/Iw;
             if FracH < 0.3 && FracW < 0.3
                 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 <<<<<<< HEAD
@@ -84,6 +85,8 @@ if FaceBox
 =======
 >>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
 >>>>>>> Stashed changes
+=======
+>>>>>>> parent of 330226b... Color Intensity Classification Method Implemented
                 FaceBox(i,:) = [1,1,0,0];
             else 
                 FaceBoxTemp = FaceBox(i,:);
@@ -96,6 +99,7 @@ if FaceBox
             FaceBox = FaceBoxTemp;
         end
     end
+<<<<<<< HEAD
 <<<<<<< Updated upstream
     %faceImage = insertObjectAnnotation(I,'rectangle',FaceBox,'Face');
     %figure; imshow(faceImage); title('Face Detected');
@@ -118,6 +122,11 @@ if FaceBox
     %pause
 >>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
 >>>>>>> Stashed changes
+=======
+    %faceImage = insertObjectAnnotation(I,'rectangle',FaceBox,'Face');
+    %figure; imshow(faceImage); title('Face Detected');
+    %pause
+>>>>>>> parent of 330226b... Color Intensity Classification Method Implemented
 end
 
 if found(1) == 0 && found(2) == 0
@@ -159,6 +168,7 @@ end
 Med = zeros(2,3);
 Av = zeros(2,3);
 if found(2)
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 <<<<<<< HEAD
@@ -174,6 +184,8 @@ if found(2)
 =======
 >>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
 >>>>>>> Stashed changes
+=======
+>>>>>>> parent of 330226b... Color Intensity Classification Method Implemented
     % Upper Region
     Reg1 = I(EyeBigBox(2)-EyeBigBox(4):EyeBigBox(2)+EyeBigBox(4),EyeBigBox(1):EyeBigBox(1)+EyeBigBox(3),:);
     % Lower Region
@@ -183,6 +195,7 @@ if found(2)
     % figure; imshow(I);
     % title(sprintf('(Top RGB,Bot RGB) - Median:(%0.2f,%0.2f,%0.2f - %0.2f,%0.2f,%0.2f) Average:(%0.2f,%0.2f,%0.2f - %0.2f,%0.2f,%0.2f)',Med(1,1),Med(1,2),Med(1,3),Med(2,1),Med(2,2),Med(2,3),Av(1,1),Av(1,2),Av(1,3),Av(2,1),Av(2,2),Av(2,3)));
 elseif found(1)
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 <<<<<<< HEAD
@@ -198,6 +211,8 @@ elseif found(1)
 =======
 >>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
 >>>>>>> Stashed changes
+=======
+>>>>>>> parent of 330226b... Color Intensity Classification Method Implemented
     % Upper Region
     Reg1 = I(EyeSmallBox(2)-EyeSmallBox(4):EyeSmallBox(2)+EyeSmallBox(4),EyeSmallBox(1):EyeSmallBox(1)+EyeSmallBox(3),:);
     % Lower Region
@@ -206,7 +221,10 @@ elseif found(1)
     Av(1,:) = mean(Reg1,[1,2]); Av(2,:) = mean(Reg2,[1,2]);
     % figure; imshow(I);
     % title(sprintf('(Top RGB,Bot RGB) - Median:(%0.2f,%0.2f,%0.2f - %0.2f,%0.2f,%0.2f) Average:(%0.2f,%0.2f,%0.2f - %0.2f,%0.2f,%0.2f)',Med(1,1),Med(1,2),Med(1,3),Med(2,1),Med(2,2),Med(2,3),Av(1,1),Av(1,2),Av(1,3),Av(2,1),Av(2,2),Av(2,3)));
+<<<<<<< HEAD
 <<<<<<< Updated upstream
+=======
+>>>>>>> parent of 330226b... Color Intensity Classification Method Implemented
 elseif found(4)
     % Upper Region
 %     Reg1 = I(NewEyeBox(2)-NewEyeBox(4):NewEyeBox(2)+NewEyeBox(4),NewEyeBox(1):NewEyeBox(1)+NewEyeBox(3),:);
@@ -214,6 +232,7 @@ elseif found(4)
 %     Reg2 = I(NewEyeBox(2)+NewEyeBox(4):NewEyeBox(2)+3*NewEyeBox(4),NewEyeBox(1):NewEyeBox(1)+NewEyeBox(3),:);
 %     Med(1) = median(Reg1); Med(2) = median(Reg2);
 %     Av(1) = mean(Reg1); Av(2) = mean(Reg2);
+<<<<<<< HEAD
 end
 
 =======
@@ -272,4 +291,8 @@ end
 
 >>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
 >>>>>>> Stashed changes
+=======
+end
+
+>>>>>>> parent of 330226b... Color Intensity Classification Method Implemented
 end

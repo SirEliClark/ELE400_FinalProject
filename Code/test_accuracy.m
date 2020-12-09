@@ -13,6 +13,7 @@ numI = size(Ifiles,1);
 ColorCount = 1;
 NoDetect = 0;
 % Loop through each image
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 for i = 3:numI
     currI = Ifiles(i).name;
@@ -30,6 +31,10 @@ for i = 3:numI
     currI = Ifiles(i).name;
 >>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
 >>>>>>> Stashed changes
+=======
+for i = 3:numI
+    currI = Ifiles(i).name;
+>>>>>>> parent of 330226b... Color Intensity Classification Method Implemented
     I = imread(currI);
     % Move to code folder to run functions
     cd ..; cd Code;
@@ -85,6 +90,7 @@ for i = 3:numI
     
     % Check if BigEyePair is found
     if found(2)
+<<<<<<< HEAD
         MaskDect(i) = checkIntersection(Points, EyeBigBox);
         if not(MaskDect(i))
             if CurrMedDist >= MedThresh || CurrAvDist >= AvThresh
@@ -162,6 +168,8 @@ for i = 3:numI
     
     % Check if BigEyePair is found
     if found(2)
+=======
+>>>>>>> parent of 330226b... Color Intensity Classification Method Implemented
         MaskDect(i-2) = checkIntersection(Points, EyeBigBox);
 %         if not(MaskDect(i-2))
 %             Idown = I(EyeBigBox(2):end,EyeBigBox(1):EyeBigBox(1)+EyeBigBox(3),:);
@@ -203,6 +211,7 @@ for i = 3:numI
 %         end
         % Check if SmallEyePair is found
     elseif found(1)
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 <<<<<<< HEAD
@@ -266,6 +275,8 @@ for i = 3:numI
 =======
 >>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
 >>>>>>> Stashed changes
+=======
+>>>>>>> parent of 330226b... Color Intensity Classification Method Implemented
         MaskDect(i-2) = checkIntersection(Points, EyeSmallBox);
 %         if not(MaskDect(i-2))
 %             Idown = I(EyeSmallBox(2):end,EyeSmallBox(1):EyeSmallBox(1)+EyeSmallBox(3),:);
@@ -285,6 +296,7 @@ for i = 3:numI
 %             hold on
 %             max_len = 0;
 %             for k = 1:length(lines)
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 <<<<<<< HEAD
@@ -297,6 +309,8 @@ for i = 3:numI
 =======
 >>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
 >>>>>>> Stashed changes
+=======
+>>>>>>> parent of 330226b... Color Intensity Classification Method Implemented
 %                 xy = [lines(k).point1; lines(k).point2];
 %                 plot(xy(:,1)+EyeSmallBox(1),xy(:,2)+EyeSmallBox(2),'LineWidth',2,'Color','green');
 %                 
@@ -311,12 +325,16 @@ for i = 3:numI
 %                     xy_long = xy;
 %                 end
 %             end
+<<<<<<< HEAD
 <<<<<<< Updated upstream
+=======
+>>>>>>> parent of 330226b... Color Intensity Classification Method Implemented
 %             plot(xy_long(:,1)+EyeSmallBox(1),xy_long(:,2)+EyeSmallBox(2),'LineWidth',2,'Color','cyan');
 %             title("Hough and ROI's");
 %             hold off
 %        end
         % Check if Face is found
+<<<<<<< HEAD
     elseif found(4)
         MaskDect(i-2) = checkIntersection(Points, EyeBox);
     elseif found(3)
@@ -406,10 +424,22 @@ end
 end
 >>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
 >>>>>>> Stashed changes
+=======
+    elseif found(4)
+        MaskDect(i-2) = checkIntersection(Points, EyeBox);
+    elseif found(3)
+        MaskDect(i-2) = 0;
+    end
+    %pause;
+    % Switch back to folder to get next image in following loop
+    cd ..; cd NewCropped;
+end
+>>>>>>> parent of 330226b... Color Intensity Classification Method Implemented
 figure;
 histogram(MedColor); title('Norm of Median Color Distances');
 figure;
 histogram(AvColor); title('Norm of Mean Color Distances');
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 <<<<<<< HEAD
@@ -417,6 +447,8 @@ histogram(AvColor); title('Norm of Mean Color Distances');
 =======
 >>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
 >>>>>>> Stashed changes
+=======
+>>>>>>> parent of 330226b... Color Intensity Classification Method Implemented
 DectBinary = (MaskDect==MaskReal);
 Acc = mean(DectBinary);
 % Move back to code folder
