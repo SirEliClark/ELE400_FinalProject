@@ -60,29 +60,64 @@ if FaceBox
     found(3) = 1;
     % Get rid of face boxes that are really small
     [Ih, Iw, ~] = size(I);
-    if size(FaceBox,1)
-        Eyeh = FaceBox(4); Eyew = FaceBox(3);
-        FracH = Eyeh/Ih; FracW = Eyew/Iw;
-        if FracH < 0.3 && FracW < 0.3
+    if size(FaceBox,1) == 1
+        Frac = FaceBox(4)/Iw;
+        if Frac < 0.3
             found(3) = 0;
             FaceBox = [1,1,0,0];
         end
     else
+        FaceBoxTemp = 0;
         for i = 1:size(FaceBox,1)
+<<<<<<< HEAD
+            Frac = FaceBox(i,4)/Iw;
+            if Frac < 0.3
+=======
             Eyeh = FaceBox(i,4); Eyew = FaceBox(i,3);
             FracH = Eyeh/Ih; FracW = Eyew/Iw;
             if FracH < 0.3 && FracW < 0.3
                 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+>>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
+=======
+>>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
+>>>>>>> Stashed changes
                 FaceBox(i,:) = [1,1,0,0];
+            else 
+                FaceBoxTemp = FaceBox(i,:);
             end
         end
         if FaceBox(:,4) == zeros(size(FaceBox,1),1)
             found(3) = 0;
         end
+        if FaceBoxTemp ~= 0
+            FaceBox = FaceBoxTemp;
+        end
     end
+<<<<<<< Updated upstream
     %faceImage = insertObjectAnnotation(I,'rectangle',FaceBox,'Face');
     %figure; imshow(faceImage); title('Face Detected');
     %pause
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+    %     if found(3)
+    %         faceImage = insertObjectAnnotation(I,'rectangle',FaceBox,'Face');
+    %         figure; imshow(faceImage); title('Face Detected');
+    %     end
+=======
+    %faceImage = insertObjectAnnotation(I,'rectangle',FaceBox,'Face');
+    %figure; imshow(faceImage); title('Face Detected');
+    %pause
+>>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
+=======
+    %faceImage = insertObjectAnnotation(I,'rectangle',FaceBox,'Face');
+    %figure; imshow(faceImage); title('Face Detected');
+    %pause
+>>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
+>>>>>>> Stashed changes
 end
 
 if found(1) == 0 && found(2) == 0
@@ -113,7 +148,7 @@ if found(1) == 0 && found(2) == 0
         NewEyeBox;
         % faceImage = insertObjectAnnotation(I,'rectangle',NewEyeBox,'Right Eyes');
         % figure; imshow(faceImage); title('Eyes Detected');
-    else 
+    else
         NewEyeBox = EyeBox;
     end
 end
@@ -124,6 +159,21 @@ end
 Med = zeros(2,3);
 Av = zeros(2,3);
 if found(2)
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+    faceImage = insertObjectAnnotation(I,'rectangle',EyeBigBox,'Eye ROI');
+    Top = EyeBigBox(2)-round(EyeBigBox(4));
+    Mid = EyeBigBox(2)+EyeBigBox(4);
+    Bot = EyeBigBox(2)+round(3*EyeBigBox(4));
+    Left = EyeBigBox(1);
+    Right = EyeBigBox(1)+EyeBigBox(3);
+=======
+>>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
+=======
+>>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
+>>>>>>> Stashed changes
     % Upper Region
     Reg1 = I(EyeBigBox(2)-EyeBigBox(4):EyeBigBox(2)+EyeBigBox(4),EyeBigBox(1):EyeBigBox(1)+EyeBigBox(3),:);
     % Lower Region
@@ -133,6 +183,21 @@ if found(2)
     % figure; imshow(I);
     % title(sprintf('(Top RGB,Bot RGB) - Median:(%0.2f,%0.2f,%0.2f - %0.2f,%0.2f,%0.2f) Average:(%0.2f,%0.2f,%0.2f - %0.2f,%0.2f,%0.2f)',Med(1,1),Med(1,2),Med(1,3),Med(2,1),Med(2,2),Med(2,3),Av(1,1),Av(1,2),Av(1,3),Av(2,1),Av(2,2),Av(2,3)));
 elseif found(1)
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+    faceImage = insertObjectAnnotation(I,'rectangle',EyeSmallBox,'Eye ROI');
+    Top = EyeSmallBox(2)-round(EyeSmallBox(4));
+    Mid = EyeSmallBox(2)+EyeSmallBox(4);
+    Bot = EyeSmallBox(2)+round(3*EyeSmallBox(4));
+    Left = EyeSmallBox(1);
+    Right = EyeSmallBox(1)+EyeSmallBox(3);
+=======
+>>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
+=======
+>>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
+>>>>>>> Stashed changes
     % Upper Region
     Reg1 = I(EyeSmallBox(2)-EyeSmallBox(4):EyeSmallBox(2)+EyeSmallBox(4),EyeSmallBox(1):EyeSmallBox(1)+EyeSmallBox(3),:);
     % Lower Region
@@ -141,6 +206,7 @@ elseif found(1)
     Av(1,:) = mean(Reg1,[1,2]); Av(2,:) = mean(Reg2,[1,2]);
     % figure; imshow(I);
     % title(sprintf('(Top RGB,Bot RGB) - Median:(%0.2f,%0.2f,%0.2f - %0.2f,%0.2f,%0.2f) Average:(%0.2f,%0.2f,%0.2f - %0.2f,%0.2f,%0.2f)',Med(1,1),Med(1,2),Med(1,3),Med(2,1),Med(2,2),Med(2,3),Av(1,1),Av(1,2),Av(1,3),Av(2,1),Av(2,2),Av(2,3)));
+<<<<<<< Updated upstream
 elseif found(4)
     % Upper Region
 %     Reg1 = I(NewEyeBox(2)-NewEyeBox(4):NewEyeBox(2)+NewEyeBox(4),NewEyeBox(1):NewEyeBox(1)+NewEyeBox(3),:);
@@ -150,4 +216,60 @@ elseif found(4)
 %     Av(1) = mean(Reg1); Av(2) = mean(Reg2);
 end
 
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+elseif found(3)
+    % Region Boundaries
+    faceImage = insertObjectAnnotation(I,'rectangle',FaceBox,'Face ROI');
+    Top = round(FaceBox(2)+FaceBox(4)*.1);
+    Mid = round(FaceBox(2)+FaceBox(4)*.4);
+    Bot = round(FaceBox(2)+FaceBox(4)*.7);
+    Left = round(FaceBox(1)+FaceBox(3)*.2);
+    Right = round(FaceBox(1)+FaceBox(3)*.8);
+    % Upper region
+    Reg1 = I(Top:Mid,Left:Right,:);
+    % Lower Region
+    Reg2 = I(Mid:Bot,Left:Right,:);
+    Med(1,:) = median(Reg1,[1,2]); Med(2,:) = median(Reg2,[1,2]);
+    Av(1,:) = mean(Reg1,[1,2]); Av(2,:) = mean(Reg2,[1,2]);
+end
+if Med ~= zeros(2,3)
+    CurrMedDist = norm(Med(1,:)-Med(2,:));
+    CurrAvDist = norm(Av(1,:)-Av(2,:));
+    figure;
+    imshow(faceImage);
+    hold on
+    plot([Left,Right],[Top,Top],'LineWidth',1,'Color','red');
+    plot([Right,Right],[Top,Bot],'LineWidth',1,'Color','red');
+    plot([Right,Left],[Bot,Bot],'LineWidth',1,'Color','red');
+    plot([Left,Left],[Bot,Top],'LineWidth',1,'Color','red');
+    plot([Left,Right],[Mid,Mid],'LineWidth',1,'Color','red');
+    title({"ROI and Segmented Face",['|RGB_{med}|=',num2str(CurrMedDist),'     |RGB_{mean}|=',num2str(CurrAvDist)]});
+    hold off
+    pause
+end
+=======
+elseif found(4)
+    % Upper Region
+%     Reg1 = I(NewEyeBox(2)-NewEyeBox(4):NewEyeBox(2)+NewEyeBox(4),NewEyeBox(1):NewEyeBox(1)+NewEyeBox(3),:);
+%     % Lower Region
+%     Reg2 = I(NewEyeBox(2)+NewEyeBox(4):NewEyeBox(2)+3*NewEyeBox(4),NewEyeBox(1):NewEyeBox(1)+NewEyeBox(3),:);
+%     Med(1) = median(Reg1); Med(2) = median(Reg2);
+%     Av(1) = mean(Reg1); Av(2) = mean(Reg2);
+end
+
+>>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
+=======
+elseif found(4)
+    % Upper Region
+%     Reg1 = I(NewEyeBox(2)-NewEyeBox(4):NewEyeBox(2)+NewEyeBox(4),NewEyeBox(1):NewEyeBox(1)+NewEyeBox(3),:);
+%     % Lower Region
+%     Reg2 = I(NewEyeBox(2)+NewEyeBox(4):NewEyeBox(2)+3*NewEyeBox(4),NewEyeBox(1):NewEyeBox(1)+NewEyeBox(3),:);
+%     Med(1) = median(Reg1); Med(2) = median(Reg2);
+%     Av(1) = mean(Reg1); Av(2) = mean(Reg2);
+end
+
+>>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
+>>>>>>> Stashed changes
 end

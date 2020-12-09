@@ -16,11 +16,23 @@ Ig = rgb2gray(I);
 [points, chainLen] = Hysterisis(I_nonMax,threshold_low,threshold_high,Eo_new);
 
 % Get histogram for values of >1 from I_nonMax
+<<<<<<< Updated upstream
 fracNonMax = .10;
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+fracNonMax = .1;
+=======
+fracNonMax = .10;
+>>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
+=======
+fracNonMax = .10;
+>>>>>>> ad15b02486c025c1ea523548bd9ba48fb087350a
+>>>>>>> Stashed changes
 I_col = I_nonMax(:);
 I_sortLH = sort(I_col);
 %I_sortHL = sort(I_col,'descend');
-NumG1 = find((I_sortLH>0),1);
+NumG1 = find((I_sortLH>1),1);
 NumUsed = round((length(I_sortLH)-NumG1)*fracNonMax);
 threshNew = I_sortLH(end-NumUsed);
 
